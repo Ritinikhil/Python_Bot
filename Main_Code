@@ -1,0 +1,652 @@
+#Unity chatBot
+#Powered By Yukomz
+import socket
+import time
+import long_responses as long
+import re
+import wikipedia
+import pyttsx3
+from tkinter import messagebox
+import json
+from difflib import get_close_matches
+def isConnect():
+    try:
+        s = socket.create_connection(
+              ("www.geeksforgeeks.org",80))
+        if s is not None:
+            s.close
+        return True
+    except OSError:
+        pass
+    return False
+if isConnect()==False:
+    messagebox.showerror("UNITY CHATBOT","No Internet Connection")
+    #talk("NO INTERNET CONNECTION")
+    exit()
+from tkinter import *
+import requests
+from bs4 import BeautifulSoup
+from tkinter import messagebox
+import pywhatkit
+from PIL import Image,ImageTk
+import tkinter as tk
+from itertools import count,cycle
+import subprocess
+import speech_recognition as sr
+import pyttsx3
+import datetime
+import pyjokes
+listener=sr.Recognizer()
+engine=pyttsx3.init()
+voices=engine.getProperty('voices')
+engine.setProperty('voice',voices[1].id)
+def take_command():
+    try:
+        with sr.Microphone() as source:
+            #listbox.insert(END,f"Bot:Listening...")
+            voice=listener.listen(source)
+            command=listener.recognize_google(voice)
+            command=command.lower()
+            if 'unity' in command:
+                command=command.replace('unity','')
+                listbox.insert(END,command)
+    except:
+        pass
+    return command
+def talk(text):
+    engine.say(text)
+    engine.runAndWait()
+def run_unity():
+    listbox.insert(END,f"SAY: HEY UNITY")
+    command=take_command()
+    listbox.insert(END,command)
+    if 'play' in command:
+        song=command.replace('play','')
+        talk('playing' + song)
+        pywhatkit.playonyt(song)
+    elif 'time' in command:
+        time=datetime.datetime.now().strftime('%I:%M %p')
+        talk('Current time is' + time)
+    elif 'who is' in command:
+        person=command.replace('who is'+'')
+        info=wikipedia.summary(person,2)
+        listbox.insert(END,info)
+        talk(info)
+    elif 'date' in command:
+        talk('Sorry,I have a headache')
+        listbox.insert(END,f"I'm not single")
+    elif 'joke' in command:
+        talk(pyjokes.get_joke())
+    else:
+        talk('Please say the command again.')
+    
+
+
+root=Tk()
+#logo_Image = PhotoImage(file="C:\\Users\\DELL\\OneDrive\\Pictures\\Camera Roll\\bot.png")
+#Label(root, image=logo_Image, bg="#0f1a2b").place(x=0,y=0)
+
+root.geometry("610x580")
+root.maxsize(610,580)
+root.minsize(610,580)
+root.title("UNITY CHATBOT")
+root.config(bg='black')
+class ImageLabel(tk.Label):
+    def load(self,im):
+        if isinstance(im,str):
+            im=Image.open(im)
+        frames=[]
+        try:
+            for i in count(1):
+                frames.append(ImageTk.PhotoImage(im.copy()))
+                im.seek(i)
+        except EOFError:
+            pass
+        self.frames =cycle(frames)
+        try:
+            self.delay=im.info['duration']
+        except:
+            self.delay=100
+        if len(frames)==1:
+            self.config(image=next(self.frames))
+        else:
+            self.next_frame()
+    def unload(self):
+        self.config(image=None)
+        self.frames=None
+    def next_frame(self):
+        if self.frames:
+            self.config(image=next(self.frames))
+            self.after(self.delay,self.next_frame)
+lbl=ImageLabel(root)
+lbl.place(x=0,y=0)
+lbl.load('c:\\Users\\DELL\\Downloads\\bot.gif')
+
+
+        # For conncting scrollbar to a widget
+# 1. widget(yscrollcommand = scrollbar.set)
+# 2. scrollbar.config(command=widget.yview)
+
+scrollbar =Scrollbar(root)
+scrollbar.pack(side=RIGHT,fill=Y)
+Label(root,text="Unity ChatBot",fg="YellowGreen",font="Helvetica 20 bold ",bg='cadet blue',relief=RAISED,borderwidth=9,cursor="watch",width=20).pack(anchor=E,padx=3)
+
+
+listbox=Listbox(root,yscrollcommand=scrollbar.set,bg="lightcyan",height=30)
+
+
+def add_item(event=1):
+    global list_data
+    listbox.insert(END,content.get())
+    content.get().lower()
+    import webbrowser
+    if content.get()=="Bot!":
+        content.set("")
+        talk("Welcome to Unity Bot")
+        
+        listbox.insert(END,f"Wuo!!Welcome To Unity Bot")
+        listbox.insert(END,f"Developed By Nikhil Singh")
+        ws=Tk()
+        ws.title('Unity-ChatBot Manual')
+        ws.geometry("800x800")
+        ws.maxsize(800,800)
+        ws.minsize(800,800)
+        ws.config(bg='#84BF04')
+        scroll_bar=Scrollbar(ws)
+        message='''Dear User,
+        Thanks For Giving Your Support To My Bot
+        This Bot is Developed By Nikhil Singh
+        Please Carefully Read all the instructions and
+        commands of the Bot.
+        ************************************************
+        commands:
+        >whatsapp! -     To schedule a Whatsapp Message.
+                         Make Sure You are Logged in Your
+                         Whatsapp Web in Default Browser.
+        >google! -       To open Google.
+        >gmail! -        To open Gmail.com
+        >youtube! -      To open youtube.com
+        >exit! -         To Close The Programm
+        >off! -          To Switch Off The Computer
+        >getwifi! -      To get saved wifi passwords
+        >time! -         To know Time
+        >date! -         To get Date
+        >timer! -        To Set Timer <00:00:00>
+        >active! -       To keep Your System active
+                         Press ESC to exit Pause
+        >joke  -         To listen joke
+        >play!<title>    To play video of the given title
+        >who is -        To search from wikipedia
+        >what is -       To know about your query
+        >meaning<word>-  To know the meaning of the word
+        >search<website> To open That Website with Domain
+        >movies -        To get Top 10 movies
+        >commands -      To Display All Bot Commands
+        >say-            To read Out the Given Phrase
+        ________________________________________________
+        Instructions:
+        Enter any expression and get answer eg.1+2.
+        User Must login in whatsapp web is default
+        browser while using whatsapp!.
+        Enter any question like "what is the age" or
+        "who is amitabh bachan" to get answer.
+        Website Domain like "amazon.in" or "samsung.com".
+        active! command is to make PC awake.
+        Please Make sure the spellings and case of the
+        Bot commands,otherwise you will face Error.
+        '''
+        scroll_bar.pack(side=RIGHT)
+        text_box=Text(ws,height=30,width=60)
+        text_box.pack(expand=True
+                      )
+        text_box.insert(END,message)
+        text_box.config(state='disabled')
+        ws.mainloop()
+    elif "timer!" in str(content.get()):
+        import tkinter as tk
+        content.set("")
+        talk("Opening Unity Timer")
+        root2=tk.Tk()
+        root2.geometry("547x53")
+        root2.maxsize(547,53)
+        root2.minsize(547,53)
+        root2.grid_columnconfigure(4, weight=1)
+        
+        root2.title("Unity Timer")
+        tk.Label(root2,text="Time HH:MM:SS", bg="#c2f0c2", font="verdana 22").grid(row=3, column=0, sticky='w')
+        h=tk.Entry(root2, bg="#ffe6b3", font="verdana 22", width=2)
+        h.grid(row=3,column=1 , sticky='w')
+
+        m=tk.Entry(root2, bg="#ffe6b3", font="verdana 22", width=2)
+        m.grid(row=3,column=2 , sticky='w')
+        
+        s=tk.Entry(root2, bg="#ffe6b3",font="verdana 22", width=2)
+        s.grid(row=3,column=3,sticky='w')
+        
+        def countdown():
+            import datetime
+            import time
+            from playsound import playsound
+            talk("Timer Set")
+            total_seconds = int(f'{h.get()}') * 3600 + int(f'{m.get()}') * 60 + int(f'{s.get()}')
+            while total_seconds > 0:
+                timer = datetime.timedelta(seconds = total_seconds)
+                time.sleep(1)
+                total_seconds -= 1
+            playsound("C:\\Users\\DELL\\Downloads\\buz.wav")
+            playsound("C:\\Users\\DELL\\Downloads\\buz.wav")
+            playsound("C:\\Users\\DELL\\Downloads\\buz.wav")
+            talk("Time Up")
+            talk("Get Back To Work")
+            listbox.insert(END,f"Time Up! Get Back To Work")
+
+        tk.Button(root2, text="SET", bg="#d1d1e0", font="verdana 16", command=countdown).grid(row=3,column=4,sticky='w')
+        root2.mainloop()
+    elif content.get()=="whatsapp!":
+        content.set("")
+        talk("Opening UNITY whatsapp Message Scheduler")
+        import pywhatkit
+        import tkinter as tk
+        root1 = tk.Tk()
+        root1.title("Unity-Message-Scheduler")
+        root1.grid_columnconfigure(2, weight=1)
+        def send():
+            try:
+                pywhatkit.sendwhatmsg(f'+91{phone.get()}', message.get('1.0', 'end-1c'), int(hour.get()), int(minute.get()))
+                talk("Message is Successfully Scheduled")
+                    
+            except:
+                messagebox.showerror("UNITY CHATBOT","Unable To Connect With WhatsApp Web")
+                    
+#title
+        tk.Label(root1, text="Unity Message Scheduler", bg='#99e6ff', font="Verdana 34").grid(columnspan=3, sticky='e')
+
+#phone
+        tk.Label(root1,text="Phone: ", bg="#c2f0c2", font="verdana 22").grid(row=1, column=0, sticky='w')
+        phone = tk.Entry(root1, bg="#ffe6b3", font="verdana 22", width=10)
+        phone.grid(row=1, column=1, sticky='w', columnspan=2)
+
+#message
+        tk.Label(root1,text="Message: ", bg="#c2f0c2", font="verdana 22").grid(row=2, column=0, sticky='nw')
+        message=tk.Text(root1, bg="#ffe6b3", font="verdana 22", height=4, width=32)
+        message.grid(row=2, column=1, sticky='w', columnspan=2)
+
+#time
+        tk.Label(root1,text="Time HH:MM", bg="#c2f0c2", font="verdana 22").grid(row=3, column=0, sticky='w')
+        hour=tk.Entry(root1, bg="#ffe6b3", font="verdana 22", width=2)
+        hour.grid(row=3, column=1, sticky='w')
+#minute
+        minute=tk.Entry(root1, bg="#ffe6b3", font="verdana 22", width=2)
+        minute.grid(row=3, column=2, sticky='w')
+
+#send button
+        tk.Button(root1, text="send", bg="#d1d1e0", font="verdana 16", command=send).grid(row=4, column=2, sticky='e')
+        root1.mainloop()
+#warning
+            #print(message.get())
+            #listbox.insert(END,message.get())
+            #listbox.insert(END,f"Enter Time To Send MSG.")
+            #listbox.insert(message.get())
+            #print(time.get())
+                    
+            #try:
+               #pwk.sendwhatmsg(no,message,time,00)
+                #listbox.insert(END,f"Message Sent!")        
+ 
+            #except: 
+                #listbox.insert(END,f"Error in Sending The Message")
+                #print("Error in sending the message")
+    elif content.get()=="exit!":
+        content.set("")
+        talk("Have a Great Day")
+        talk("Signing off")
+        exit()
+    elif 'help' in str(content.get()):
+        content.set("")
+        listbox.insert(END,f"Try Bot!")
+        talk("What can I help You Dear")
+        listbox.insert(END,f"Try commands")
+    elif 'time' in str(content.get()):
+        listbox.insert(END,f"Bot:")
+        import datetime
+        time=datetime.datetime.now().strftime('%I:%M %p')
+        talk(time)
+        listbox.insert(END,str(time))
+        content.set("")
+    elif 'funny' in str(content.get()):
+        listbox.insert(END,f"Bot:")
+        listbox.insert(END,f"Go And Look Into The Mirror")
+        listbox.insert(END,f"Most funniest thing is there")
+        talk("Go and look into the mirror")
+        talk("Most funniest thing is there")
+    elif 'commands' in str(content.get()):
+        content.set("")
+        talk("Displaying all Unity Bot Commands")
+        listbox.insert(END,f"")
+        listbox.insert(END,f">whatsapp! - To schedule a Whatsapp Message.")
+        listbox.insert(END,f">google! - To open Google.")
+        listbox.insert(END,f">gmail! - To open Gmail.com")
+        listbox.insert(END,f">youtube! - To open youtube.com")
+        listbox.insert(END,f">exit! - To Close The Programm")
+        listbox.insert(END,f">off! - To Switch Off The Computer")
+        listbox.insert(END,f">getwifi! - To get saved wifi passwords")
+        listbox.insert(END,f">time! - To know Time")
+        listbox.insert(END,f">date! - To get Date")
+        listbox.insert(END,f">timer! -  To Set Timer <00:00:00>")
+        listbox.insert(END,f">active! - To keep Your System active")
+        listbox.insert(END,f">joke - To listen joke")
+        listbox.insert(END,f">play!<title>  To play video of the given title")
+        listbox.insert(END,f">meaning<word>- To know the meaning of the word")
+        listbox.insert(END,f">search<website> To open That Website with Domain")
+        listbox.insert(END,f">movies - To get Top Ten Movies")
+        listbox.insert(END,f">say- To read out the Phrase")
+        talk("For More Info type Bot!")
+        listbox.insert(END,f"FOR MORE INFO Type 'Bot!'")
+        listbox.insert(END,f"Bot:")
+            
+    elif 'play!' in str(content.get()):
+        import pywhatkit
+        content1=str(content.get())
+        song=content1
+        talk(str(content1))
+        pywhatkit.playonyt(str(song))
+        content.set("")
+    elif 'say' in str(content.get()):
+        x=str(content.get()).replace("say",'')
+        content.set("")
+        talk(x)
+    elif 'date' in str(content.get()):
+        import datetime
+        now = datetime.datetime.now()
+        content.set("")
+        #talk("Sorry, I am in a relationship with wifi ,and cellular data is my ex")
+        date=now.strftime("%d/%m/%Y")
+        listbox.insert(END,f"Bot:")
+        content.set("")
+        listbox.insert(END,str(date))
+        talk("Well today's date is" + date)
+        content.set("")
+    elif 'meaning' in str(content.get()):
+        data=json.load(open("C:\\Users\\DELL\\Downloads\\simple_english_dictionary.json"))
+        try:
+            listbox.insert(END,f"Bot:")
+            URL = "https://www.google.co.in/search?q=" + content.get()
+            headers = {
+            'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+             }
+            content.set("")
+            page = requests.get(URL, headers=headers)
+            soup = BeautifulSoup(page.content, 'html.parser')
+            result = soup.find(class_='O5uR6d LTKOO').get_text()
+            listbox.insert(END,str(result))
+            talk(result)
+            
+        except Exception:
+            listbox.insert(END,f"The Word Does'nt Exist")
+            talk("The Word Does'nt Exist")
+        content.set("")
+    elif content.get()=="off!":
+        listbox.insert(END,f"Shutting Down The System:")
+        per=StringVar()
+        import os
+        talk("Shutting Down The System")
+        os.system("shutdown /s /t 1")
+        content.set("")
+        content.set("")
+    elif content.get()=="google!":
+        import pywhatkit
+        content.set("")
+        talk("opening Google")
+        listbox.insert(END,content.get())
+        content1=str(content.get())
+        pywhatkit.search(str(content1))
+        content.set("")
+    elif str(content.get())=="father":
+        listbox.insert(END,f"Bot:")
+        listbox.insert(END,f"Sir Nikhil Singh Made Me")
+        listbox.insert(END,f"I'm working as your assistant")
+        listbox.insert(END,f"Use me ,Improve me ,Spread me")
+        content.set("")
+    elif "who is" in content.get():
+        try:
+            import wikipedia
+            person=str(content.get()).replace('who is','')
+            info=wikipedia.summary(person,2)
+            talk(info)
+            listbox.insert(END,f"Bot:")
+            listbox.insert(END,str(info))
+            content.set("")
+        except Exception:
+            talk("Sorry,Not Found")
+            listbox.insert(END,"Bot:")
+            listbox.insert(END,"Use Google!")
+    elif "joke" in content.get():
+        content.set("")
+        x=pyjokes.get_joke()
+        listbox.insert(END,x)
+        talk(x)
+    elif "+" in str(content.get()) or "-" in str(content.get()) or "*" in str(content.get()) or "/" in str(content.get()) or "^" in str(content.get()):
+        if '^' in str(content.get()):
+            listbox.insert(END,f"Bot:")
+            info=str(content.get()).replace('^','**')
+            x=eval(str(info))
+            talk("Easy")
+            talk(x)
+            listbox.insert(END,str(x))
+        elif '/0' in str(content.get()):
+            talk("Not Easy")
+            talk("Infinty")
+            listbox.insert(END,f"Bot:")
+            listbox.insert(END,"Infinty")
+        else:
+            x=eval(str(content.get()))
+            listbox.insert(END,f"Bot:")
+            talk("Easy")
+            listbox.insert(END,eval(str(content.get())))
+            talk(x)
+        content.set("")
+    elif "search" in str(content.get()):
+        import webbrowser
+        w=str(content.get()).replace('search', '')
+        webbrowser.open(str(w[1:]))
+        content.set("")
+        
+    elif content.get()=="unity!":
+        run_unity()
+    elif content.get()=="getwifi!":
+        content.set("")
+        talk("Fetching all saved wifi passwords")
+        data = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles']).decode('utf-8').split('\n')
+        profiles = [i.split(":")[1][1:-1] for i in data if "All User Profile" in i]
+        for i in profiles:
+    
+            results = subprocess.check_output(['netsh', 'wlan', 'show', 'profile', i, 
+                    'key=clear']).decode('utf-8').split('\n')
+    
+            results = [b.split(":")[1][1:-1] for b in results if "Key Content" in b]
+   
+            try:
+                    #print ("{:<30}|  {:<}".format(i, results[0]))
+                listbox.insert(END,f"")
+                listbox.insert(END,"{:<18}=  {:<}".format(i,results[0]))
+            except IndexError:
+                print ("{:<30}|  {:<}".format(i, ""))
+        #if content.get()=="notes!":
+            #listbox.insert(END,f"Opening Unity Notes")
+            #unity=Tk()
+            #unity.geometry("600x400")
+            #def getvals():
+                #printf("fThe value")
+                
+            #user=Label(unity,text="Heading")
+            #user.pack()
+            #uservalue=StringVar()
+            #userentry=Entry(unity, textvariable = uservalue)
+            #userentry.pack()
+            #Button(text="Submit",command=getvals).pack()
+            #listbox2=Listbox(unity,yscrollcommand=scrollbar.set,bg="yellow",height=20,width=50,borderwidth=10,font="verdana 9")
+            #listbox2.insert(END,content.get())
+            #listbox2.pack()
+            #unity.mainloop()
+            #content.set("")
+           
+     #Dictionary
+    #if content.get()=="dictionary!":
+         #content.set("")
+         #listbox.insert(END,f"Dictionary Opened:")
+    elif content.get()=="gmail!":
+        listbox.insert(END,f"Opening Gmail:")
+        talk("Opening Gmail")
+        try:
+            webbrowser.open('gmail.com')
+        except:
+            messagebox.showerror("UNITY CHATBOT","Unable To Connect With Gmail")
+        content.set("")
+    elif content.get()=="active!":
+        import pyautogui
+        talk("Keeping Your System active")
+        talk("Press Escape To Exit")
+        content.set("")
+        import time
+        pyautogui.FAILSAFE=False
+        while True:
+            time.sleep(15)
+            for i in range(0,100):
+                pyautogui.moveTo(0,i*5)
+            for i in range(0,3):
+                pyautogui.press('shift')
+            if keyboard.read_key()=="esc":
+                listbox.insert(END,f"Bot:")
+                listbox.insert(END,f"PAUSE OVER")
+                talk("Pause Over")
+                break
+    elif "movies" in str(content.get()):
+        import imdb
+        ia=imdb.IMDb()
+        search=ia.get_top250_movies()
+        for i in range(10):
+            listbox.insert(END,str(search[i]))
+        content.set("")
+                    
+    elif content.get()=="youtube!":
+        listbox.insert(END,f"Opening Yotube:")
+        try:
+            webbrowser.open('youtube.com')
+        except:
+            messagebox.showerror("UNITY CHATBOT","Unable To Connect With Youtube")
+        content.set("")
+    elif content.get()=="":
+        listbox.insert(END,f"")
+        listbox.insert(END,f"Try Bot!")
+    else:
+        try:
+            URL = "https://www.google.co.in/search?q=" + content.get()
+            headers = {
+            'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+             }
+            #content.set("")
+            page = requests.get(URL, headers=headers)
+            soup = BeautifulSoup(page.content, 'html.parser')
+            result = soup.find(class_='Z0LcW t2b5Cf CfV8xf').get_text()
+            listbox.insert(END,f"Bot:")
+            listbox.insert(END,result)
+            talk(result)
+            listbox.insert(END,f"")
+            #listbox.insert("")
+        except Exception:
+            """listbox.insert(END,f"")
+            talk("Not Found")
+            talk("I m facing trouble in my Head")
+            talk("Try Different Keywords")
+            listbox.insert(END,f"Bot: I m facing Trouble in my Head")
+            listbox.insert(END,f"Bot: Use google!")
+            listbox.insert(END,f"Bot: Try Different Keywords")"""
+            #content.set("")
+            def message_probability(user_message, recognised_words, single_response=False, required_words=[]):
+                message_certainty = 0
+                has_required_words = True
+
+    # Counts how many words are present in each predefined message
+                for word in user_message:
+                    if word in recognised_words:
+                        message_certainty += 1
+
+    # Calculates the percent of recognised words in a user message
+                percentage = float(message_certainty) / float(len(recognised_words))
+
+    # Checks that the required words are in the string
+                for word in required_words:
+                    if word not in user_message:
+                        has_required_words = False
+                        break
+
+    # Must either have the required words, or be a single response
+                if has_required_words or single_response:
+                    return int(percentage * 100)
+                else:
+                    return 0
+            def check_all_messages(message):
+                highest_prob_list = {}
+                def response(bot_response, list_of_words, single_response=False, required_words=[]):
+                    nonlocal highest_prob_list
+                    highest_prob_list[bot_response] = message_probability(message, list_of_words, single_response, required_words)
+
+    # Responses -------------------------------------------------------------------------------------------------------
+                response('Hello!', ['hello', 'hi','hii', 'hey', 'sup', 'heyo'], single_response=True)
+                response('See you!', ['bye', 'goodbye'], single_response=True)
+                response('ok!',["You're welcome! Let me know if there's anything else I can help with."],single_response=True)
+                response('I\'m doing fine, and you?', ['how', 'are', 'you', 'doing'], required_words=['how'])
+                response('You\'re welcome!', ['thank', 'thanks'], single_response=True)
+                response('Thank you!', ['i', 'love', 'code', 'palace'], required_words=['code', 'palace'])
+
+    # Longer responses
+                response(long.R_ADVICE, ['give', 'advice'], required_words=['advice'])
+                response(long.R_EATING, ['what', 'you', 'eat'], required_words=['you', 'eat'])
+
+                best_match = max(highest_prob_list, key=highest_prob_list.get)
+    # print(highest_prob_list)
+    # print(f'Best match = {best_match} | Score: {highest_prob_list[best_match]}')
+
+                return long.unknown() if highest_prob_list[best_match] < 1 else best_match
+            def get_response(user_input):
+                split_message=re.split(r'\s+|[,;?!.-]\s*',str(user_input).lower())
+                response =check_all_messages(split_message)
+                return response
+            listbox.insert(END,f"Bot:")
+            x=str(get_response(str(content.get())))
+            listbox.insert(END,x)
+            talk(x)
+    content.set("")
+            #except Exception:
+            #listbox.insert(END,f"Try Different KeyWords")
+content=StringVar()
+#1st Listbox:::
+
+listbox =Listbox(root,yscrollcommand=scrollbar.set,bg="DarkSlateGray1",height=20,width=35,borderwidth=18,font="verdana 10",cursor="arrow")
+listbox.insert(END,f">Press Bot! -Get Started")
+listbox.pack(anchor=E)
+#2nd listbox:::OK
+entry=Entry(root,textvariable=content,bg="dark sea green",width=24,borderwidth=19,font="Helvectica 17 bold")
+entry.pack(anchor=E)
+#button=Button(root,text="Enter",command=add_item,height=3,width=3,borderwidth=3,bg='cadet blue',font="verdana")
+#button.place(x=536,y=515)
+entry.bind("<Return>",add_item)
+entry.bind("&lt;Return>",add_item)
+#print(content.get())
+message=StringVar()
+no=StringVar()
+time=StringVar()
+def isConnect():
+    try:
+        s = socket.create_connection(
+              ("www.geeksforgeeks.org",80))
+        if s is not None:
+            s.close
+        return True
+    except OSError:
+        pass
+    return False
+if isConnect()==False:
+    messagebox.showerror("UNITY CHATBOT","No Internet Connection")
+scrollbar.config(command=listbox.yview)
+root.mainloop()
